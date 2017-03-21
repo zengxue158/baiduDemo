@@ -33,12 +33,9 @@ var aqiData = [
   */
   var list = document.getElementById("aqi-list");
   // filter
-  // const Data = aqiData.filter(aqiData => aqiData[1] > 60 )
+  const Data = aqiData.filter(aqiData => aqiData[1] > 60 )
 
-  // forEach
-  const Data = aqiData.forEach(aqiData => aqiData[1]>60)
 
-  Data.sort((a,b) => a[1] - b[1] ? 1:-1);
   console.table(Data);
 
   for(var i=0;i<Data.length;i++){

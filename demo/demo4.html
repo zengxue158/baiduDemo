@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	.clearfix:after {
+	    clear: both;
+	    height: 0;
+	    overflow: hidden;
+	    display: block;
+	    visibility: hidden;
+	    content: ".";
+	}
+	#aqi-list {
+		padding: 0px;
+	}
+	#aqi-list li{
+		width: 40px;
+		height: 40px;
+		background:#fc0004;
+		color: #ffffff;
+		font-size: 16px;
+		line-height: 40px;
+		float: left;
+		text-align: center;
+		list-style: none;
+		margin: 0px 10px;
+	}
+	</style>
+</head>
+<body>
+	<input type="text" id="aqi-input"/>
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<ul id="aqi-list" class="clearfix">
+		<li>12</li>
+		<li>76</li>
+		<li>34</li>
+		<li>89</li>
+	</ul>
+
+<script type="text/javascript">
+(function(){
+	// 获取当前li里的内容并保存在data里
+	var data=[];
+	function getData(){
+		var liList = document.querySelectorAll("#aqi-list li");
+		data=[];
+		for(var i=0;i<liList.length;i++){
+			data.push(liList[i].textContent);
+		}
+		return data;
+	}
+	// 左侧入
+	function leftIn(){
+		getData();
+		var inputVal = parseInt(document.getElementById("aqi-input").value,10);
+		data.unshift(inputVal);
+		render(data);
+	}
+	// 右侧入
+	function rightIn(){
+		getData();
+		var inputVal = parseInt(document.getElementById("aqi-input").value,10);
+		data.push(inputVal);
+		render(data);
+	}
+	// 左侧出
+	function leftOut(){
+		getData();
+		data.splice(0,1);
+		render(data);
+	}
+	// 右侧出
+	function rightOut(){
+		
+	}
+	// 将数组里的值显示到列表里
+	function render(data){
+		var ul = document.querySelectorAll("#aqi-list")[0];
+		var li;
+		var htmlFlagment = document.createDocumentFragment();
+
+		data.map(item =>{
+			li = document.createElement("li");
+			li.textContent = item;
+			htmlFlagment.appendChild(li);
+		})
+		ul.innerHTML="";
+		ul.appendChild(htmlFlagment);
+	}
+
+
+	var leftInBtn = document.querySelectorAll("#leftIn")[0];
+	var rightInBtn = document.querySelectorAll("#rightIn")[0];
+	var leftOutBtn = document.querySelectorAll("#leftOut")[0];
+	var rightOutBtn = document.querySelectorAll("#rightOut")[0];
+
+	leftInBtn.addEventListener("click",function(){
+		leftIn();
+	})
+	rightInBtn.addEventListener("click",function(){
+		rightIn();
+	})
+	leftOutBtn.addEventListener("click",function(){
+		leftOut();
+	})
+	rightOutBtn.addEventListener("click",function(){
+		rightOut();
+	})
+
+})();
+</script>
+</body>
+</html>

@@ -14,6 +14,7 @@
     <li>深圳空气质量：<b>40</b></li>
     <li>福州空气质量：<b>32</b></li>
     <li>成都空气质量：<b>90</b></li>
+    <li>黑龙江空气质量：<b>100</b></li>
   </ul>
 
   <ul id="resort">
@@ -35,13 +36,6 @@
  * 返回一个数组，格式见函数中示例
  */
 function getData() {
-    var ul = document.getElementById("source");
-    var li = ul.getElementsByTagName("li");
-    var data = [];
-    for(var i=0;i<li.length;i++){
-        data[i] = li[i].innerHTML;
-    }
-
   /*
   data = [
     ["北京", 90],
@@ -49,38 +43,66 @@ function getData() {
     ……
   ]
   */
+    var liList = document.querySelectorAll("#source li");
+    var item = [],
+        index,
+        text,
+        data = [];
+    for(var i=0;i<liList.length;i++){
+        item=[];
+        text = liList[i].textContent;
+        index = text.indexOf('空');
+        item.push(text.substring(0,index) );
+        item.push(liList[i].querySelector("b").textContent);
+        data.push(item);
+    }
 
-  return data;
 
+    return data;
 }
-
 /**
  * sortAqiData
  * 按空气质量对data进行从小到大的排序
  * 返回一个排序后的数组
  */
 function sortAqiData(data) {
-
+    data.sort( (a,b) => (b[1]-a[1]) );
+    return data;
 }
-
 /**
  * render
  * 将排好序的城市及空气质量指数，输出显示到id位resort的列表中
  * 格式见ul中的注释的部分
  */
 function render(data) {
-
+	var ul = document.querySelectorAll("#resort")[0];
+    var b,li;
+    var htmlFlagment = document.createDocumentFragment();
+    data.map( item =>{
+        b = document.createElement("b");
+        b.textContent = item[1];
+        li = document.createElement("li");
+        li.textContent = item[0]+"空气质量：";
+        li.appendChild(b);
+        htmlFlagment.appendChild(li);
+    })
+    ul.innerHTML="";
+    ul.appendChild(htmlFlagment);
 }
 
 function btnHandle() {
-  var aqiData = getData();
-  aqiData = sortAqiData(aqiData);
-  render(aqiData);
+    var aqiData = getData();
+    aqiData = sortAqiData(aqiData);
+    render(aqiData);
 }
 
 function init() {
 
-  // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
+    // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
+    var btn = document.querySelectorAll("#sort-btn")[0];
+    btn.addEventListener("click",function(e){
+        btnHandle();
+    })
 
 }
 
